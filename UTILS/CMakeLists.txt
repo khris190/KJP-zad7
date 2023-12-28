@@ -11,6 +11,7 @@ file(GLOB SOURCES
     include/**/*.c
 )
 
+#remove static for XOS
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 set(CPACK_PROJECT_NAME ${PROJECT_NAME}) 
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
