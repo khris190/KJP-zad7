@@ -9,7 +9,6 @@ SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY ../${BINARY_DIR})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${VERSION})
-set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_definitions(VERSION="${VERSION}")
 add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
@@ -32,10 +31,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 add_executable(${PROJECT_NAME} main.cpp)# the name of the target operating system
 
-# target_include_directories(${PROJECT_NAME} PUBLIC ${PNG_INCLUDE_DIR} ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES} ${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${MY_UTILS_INCLUDE} ${INCLUDE_DIR})
 add_dependencies(${PROJECT_NAME} MY_UTILS)
-# target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 # set(CMAKE_SYSTEM_NAME Windows)
 

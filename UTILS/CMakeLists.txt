@@ -12,7 +12,12 @@ file(GLOB SOURCES
 )
 
 #remove static for XOS
-add_library(${PROJECT_NAME} STATIC ${SOURCES})
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+add_library(${PROJECT_NAME} ${SOURCES}) 
+else()
+add_library(${PROJECT_NAME} STATIC ${SOURCES}) 
+endif()
+
 set(CPACK_PROJECT_NAME ${PROJECT_NAME}) 
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)

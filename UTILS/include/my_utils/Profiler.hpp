@@ -49,7 +49,11 @@ public:
 class PTimer {
 private:
     Sample sample;
+#ifdef APPLE
+    std::chrono::system_clock::time_point startTime;
+#else
     std::chrono::_V2::system_clock::time_point startTime;
+#endif // APPLE
 
 public:
     explicit PTimer(const std::string& name);
