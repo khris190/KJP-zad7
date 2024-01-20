@@ -12,7 +12,8 @@ set(CPACK_PROJECT_VERSION ${VERSION})
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_definitions(VERSION="${VERSION}")
 add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -std=c++20")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -std=c++20")   
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O0")
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -D DEBUG")
 
@@ -25,19 +26,25 @@ file(GLOB_RECURSE HEADERS
     ${INCLUDE_DIR}/*.h
     ${INCLUDE_DIR}/*.hpp
 )
+set(CMAKE_SYSTEM_NAME Windows)
+
 
 add_subdirectory(UTILS)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)  
 
-add_executable(${PROJECT_NAME} main.cpp)# the name of the target operating system
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+set(EXECUTABLE_NAME ${PROJECT_NAME}.exe)
+else()
+set(EXECUTABLE_NAME ${PROJECT_NAME})
+endif()
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${MY_UTILS_INCLUDE} ${INCLUDE_DIR})
-add_dependencies(${PROJECT_NAME} MY_UTILS)
+add_executable(${EXECUTABLE_NAME} main.cpp)# the name of the target operating system
 
-# set(CMAKE_SYSTEM_NAME Windows)
+target_include_directories(${EXECUTABLE_NAME} PRIVATE ${MY_UTILS_INCLUDE} ${INCLUDE_DIR})
+add_dependencies(${EXECUTABLE_NAME} MY_UTILS)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${VERSION})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-target_link_libraries(${PROJECT_NAME} PRIVATE MY_UTILS)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE MY_UTILS)
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" CONFIG)

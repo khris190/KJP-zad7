@@ -328,7 +328,7 @@ inline size_t cpyChar(char* dest, unsigned int src)
         src /= 10;
         y++;
     }
-    numbers[y] = '0' + src;
+    numbers[y] = static_cast<char>('0' + src);
     y++;
     size_t i = 0;
     for (i = 0; i < y; i++) {

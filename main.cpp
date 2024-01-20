@@ -3,6 +3,7 @@
 #include "my_utils/Profiler.hpp"
 #include <cstddef>
 #include <cstdlib>
+#include <string>
 
 long foo(long x)
 {
@@ -16,46 +17,51 @@ void fuu()
 {
 }
 
-long x = 0;
-long k = 0;
-long y = 0;
-long z = 0;
-const size_t iter = 1000000000;
 int main(int argc, const char** argv)
 {
+    long x = 0;
+    size_t iter = 10000000;
     logger.setLevel(Level::DEB);
     logger.setTarget(Target::STDOUT);
-    {
-        newTimer("emptyFor");
-        for (size_t i = 0; i < iter; i++) {
-        }
+
+    if (argc == 2) {
+        iter = atoi(argv[1]);
     }
+    logger.logInfo(std::to_string(iter));
 
     {
-        newTimer("function");
+        newTimer("no fn");
+        for (size_t i = 0; i < iter; i++) {
+            x += 1;
+        }
+    }
+    x = 0;
+    {
+        newTimer("fn with value");
         for (size_t i = 0; i < iter; i++) {
             x = foo(x);
         }
     }
+    x = 0;
     {
-        newTimer("functionRef");
+        newTimer("fn with ref");
         for (size_t i = 0; i < iter; i++) {
-            fooRef(k);
+            fooRef(x);
         }
     }
+
+    x = 0;
     {
-        newTimer("emptyFn");
+        newTimer("empty fn call");
         for (size_t i = 0; i < iter; i++) {
             fuu();
         }
     }
-
+    x = 0;
     {
-        newTimer("raw");
+        newTimer("empty loop");
         for (size_t i = 0; i < iter; i++) {
-            y += 1;
         }
     }
     logger.logInfo(Profiler::getInstance()->getTimingsAsString(true).c_str());
-    system("PAUSE");
 }
